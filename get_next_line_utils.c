@@ -1,22 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-pinh <sde-pinh@student.42.rio>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/21 12:58:15 by sde-pinh          #+#    #+#             */
+/*   Updated: 2022/06/22 11:42:00 by sde-pinh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "get_next_line.h"
 
-int	find_line(char *find)
+int	ft_find_line(char *find)
 {
 	int	count;
 
 	count = 0;
-	if(!find)
+	if (!find)
 		return (0);
 	while (find[count] != '\0')
 	{
-		if(find[count] == '\n')
+		if (find[count] == '\n')
 			return (1);
 		count++;
 	}
 	return (0);
 }
 
-char	*new_line(char *s)
+char	*ft_new_line(char *s)
 {
 	int		counter;
 	char	*new;
@@ -39,7 +50,7 @@ char	*new_line(char *s)
 	return (new);
 }
 
-char	*rest_new(char *s)
+char	*ft_rest_new(char *s)
 {
 	int		count;
 	int		size;
@@ -50,22 +61,25 @@ char	*rest_new(char *s)
 	while (s[size] != '\0' && s[size] != '\n')
 		size++;
 	if (s[size] == '\0')
+	{
+		free (s);
 		return (NULL);
+	}
 	size++;
 	res = malloc((ft_strlen(s) - size + 1) * sizeof(char));
 	if (!res)
 		return (NULL);
-	while (s[size] != '\0')
+	while (s[size + count] != '\0')
 	{
-		res[count] = s[size];
+		res[count] = s[size + count];
 		count++;
-		size++;
 	}
 	res[count] = '\0';
+	free (s);
 	return (res);
 }
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlen(char *s)
 {
 	int	count;
 
@@ -77,7 +91,7 @@ size_t	ft_strlen(const char *s)
 	return (count);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	int		count;
 	char	*new;
@@ -88,19 +102,20 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	count = 0;
 	if (s1)
 	{
-		while (*s1 != '\0')
+		while (s1[count] != '\0')
 		{
-			new[count] = *s1;
+			new[count] = s1[count];
 			count++;
-			s1++;
 		}
+		free (s1);
 	}
 	while (*s2 != '\0')
-	{
-		new[count] = *s2;
-		count++;
-		s2++;
-	}
+		new[count++] = *s2++;
 	new[count] = '\0';
+	if (!new[0])
+	{
+		free (new);
+		return (NULL);
+	}
 	return (new);
 }
